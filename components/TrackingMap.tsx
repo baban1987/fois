@@ -4,7 +4,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import type { TrackingApiResponse, TrackingData } from '../app/api/track-loco/route';
 import './Map.css';
 
@@ -34,16 +34,21 @@ interface TrackingMapProps {
 }
 
 const TrackingMap = ({ currentData, historyData }: TrackingMapProps) => {
-   const [map, setMap] = useState<L.Map | null>(null);
+  // THE FIX: Replace useState with useRef for the map instance
+  const mapRef = useRef<L.Map | null>(null);
+
   const currentPosition: [number, number] = [currentData.lat, currentData.lng];
   const historyPositions: [number, number][] = historyData.map(p => [p.lat, p.lng]);
 
-  console.log('Current position:', currentPosition);
-  console.log('History positions:', historyPositions);
-  console.log('History data length:', historyData.length);
+  const handleClosePopup = () => {
+    // THE FIX: Access the map instance via the ref's .current property
+    if (mapRef.current) {
+      mapRef.current.closePopup();
+    }
+  };
 
   return (
-    <MapContainer center={currentPosition} zoom={13} scrollWheelZoom={true} whenCreated={setMap}>
+    <MapContainer center={currentPosition} zoom={13} scrollWheelZoom={true} ref={mapRef}>
       <ChangeView center={currentPosition} />
       <TileLayer
         attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
