@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from 'react-
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useState } from 'react';
-import type { TrackingData } from '../app/api/track-loco/route';
+import type { TrackingApiResponse, TrackingData } from '@/api/loco-api/route';
 import './Map.css';
 
 const ChangeView = ({ center }: { center: [number, number] }) => {
