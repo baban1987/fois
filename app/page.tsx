@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import type { TrackingApiResponse, TrackingData } from '@/api/track-loco/route';
+import type { TrackingApiResponse, TrackingData } from '../app/api/track-loco/route';
 
 const TrackingMap = dynamic(() => import('@/components/TrackingMap'), { 
   ssr: false,
