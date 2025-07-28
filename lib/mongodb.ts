@@ -1,5 +1,5 @@
 // lib/mongodb.ts
-import mongoose from 'mongoose';
+import mongoose, { Mongoose } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -8,6 +8,17 @@ if (!MONGODB_URI) {
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
 }
+
+// --- THE FIX: START ---
+// Extend the global NodeJS namespace to include our mongoose cache.
+declare global {
+  var mongoose: {
+    promise: Promise<Mongoose> | null;
+    conn: Mongoose | null;
+  };
+}
+// --- THE FIX: END ---
+
 
 let cached = global.mongoose;
 
